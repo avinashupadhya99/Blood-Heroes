@@ -66,6 +66,7 @@ CREATE TABLE request (
   state text,
   geolocation geopoint,
   doctor_name text,
+  doctor_email text,
   remark text,
   created_date timestamp,
   PRIMARY KEY(requestid)

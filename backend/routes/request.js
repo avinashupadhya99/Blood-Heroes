@@ -9,7 +9,7 @@ const router = express.Router();
 
 
 router.post("/new", (req, res, next) => {
-    const { docId, doctorid, blood_group, state, latitude, longitude, doctor_name, remark } = req.body;
+    const { docId, doctorid, blood_group, state, latitude, longitude, doctor_name, doctor_email, hospital_name, remark } = req.body;
 
     const id = uuidv4();
     const current_time = Date.now();
@@ -24,8 +24,8 @@ router.post("/new", (req, res, next) => {
 	    if(result.rowLength > 0 ) {
 	        const queries = [
               {
-                query: 'INSERT INTO request (requestid, doctorid, blood_group, state, geolocation, doctor_name, remark, created_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-                params: [ id, doctorid, blood_group, state, geolocation, doctor_name, remark, current_time ]
+                query: 'INSERT INTO request (requestid, doctorid, blood_group, state, geolocation, doctor_name, doctor_email, remark, created_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                params: [ id, doctorid, blood_group, state, geolocation, doctor_name, doctor_email, remark, current_time ]
               }, {
                 query: 'INSERT INTO request_by_blood (requestid, doctorid, blood_group, state, geolocation, doctor_name, remark, created_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
                 params: [ id, doctorid, blood_group, state, geolocation, doctor_name, remark, current_time ]
@@ -41,12 +41,13 @@ router.post("/new", (req, res, next) => {
             	// Query for all donors in 10km range and send notification
             	dbClient.execute("SELECT * FROM donor_by_blood_group WHERE blood_group = ? AND state = ?", [blood_group, state], { prepare: true })
             	.then(donor_result => {
+
             		let number_of_donors = 0;
             		donor_result.rows.forEach((donor, index) => {
             			
             			if(distanceCalculator(latitude, longitude, donor.geolocation.latitude, donor.geolocation.longitude) <= 10) {
             				number_of_donors++;
-            				notification.sendEmail(donor.email);
+            				notification.sendEmail(donor.email, `Urgent ${blood_group} blood required`, `Dear Donor,\nThere is a ${blood_group} blood requirement at ${hospital_name}. Please contact ${doctor_name} at ${doctor_email}.\nRegards,\nBlood Heroes`);
             			}
             		});
               		res.send({ message: `Request Created and ${number_of_donors} donor(s) informed`, data: id });

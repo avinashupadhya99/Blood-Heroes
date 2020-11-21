@@ -1,5 +1,5 @@
 function Notification() {
-	this.sendEmail = (email) => {
+	this.sendEmail = (email, subject, body) => {
 		console.log(`Sending email to ${email}`);
 	};
 }
