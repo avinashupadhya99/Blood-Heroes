@@ -76,7 +76,7 @@ app.use("/", require("./routes/index"));
 app.use("/doctor", require("./routes/doctor"));
 app.use("/donor", require("./routes/donor"));
 app.use("/request", require("./routes/request"));
-app.use("/donor/interest", require("./routes/donor_interest"));
+app.use("/donor_interest", require("./routes/donor_interest"));
 
 
 const PORT = process.env.PORT || 5000;

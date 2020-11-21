@@ -12,7 +12,7 @@ router.post("/new", (req, res, next) => {
     .then(result => {
     	if(result.rowLength > 0 ) {
     		if(storeinfo) {
-    			
+    			// Store info
     		}
 
     		dbClient.execute("INSERT INTO donor_interest (interestid, donorid, requestid, created_date) VALUES (uuid(), ?, ?, dateof(now())", [donorid, requestid], { prepare: true })
