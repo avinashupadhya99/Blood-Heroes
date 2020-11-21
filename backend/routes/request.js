@@ -27,6 +27,9 @@ router.post("/new", (req, res, next) => {
                 query: 'INSERT INTO request (requestid, doctorid, blood_group, state, geolocation, doctor_name, remark, created_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
                 params: [ id, doctorid, blood_group, state, geolocation, doctor_name, remark, current_time ]
               }, {
+                query: 'INSERT INTO request_by_blood (requestid, doctorid, blood_group, state, geolocation, doctor_name, remark, created_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+                params: [ id, doctorid, blood_group, state, geolocation, doctor_name, remark, current_time ]
+              }, {
                 query: 'INSERT INTO request_by_doctor (requestid, doctorid, blood_group, state, geolocation, remark, created_date) VALUES (?, ?, ?, ?, ?, ?, ?)',
                 params: [ id, doctorid, blood_group, state, geolocation, remark, current_time ]
               }

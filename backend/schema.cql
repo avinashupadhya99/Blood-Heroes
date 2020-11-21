@@ -68,6 +68,18 @@ CREATE TABLE request (
   doctor_name text,
   remark text,
   created_date timestamp,
+  PRIMARY KEY(requestid)
+);
+
+CREATE TABLE request_by_blood (
+  requestid   uuid,
+  doctorid  uuid,
+  blood_group  text,
+  state text,
+  geolocation geopoint,
+  doctor_name text,
+  remark text,
+  created_date timestamp,
   PRIMARY KEY(blood_group, state)
 );
 
@@ -80,4 +92,12 @@ CREATE TABLE request_by_doctor (
   remark text,
   created_date timestamp,
   PRIMARY KEY(doctorid)
+);
+
+CREATE TABLE donor_interest (
+  interestid   uuid,
+  donorid  uuid,
+  requestid  uuid,
+  created_date timestamp,
+  PRIMARY KEY(donorid, requestid)
 );
