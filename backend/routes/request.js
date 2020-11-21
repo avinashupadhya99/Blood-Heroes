@@ -3,6 +3,8 @@ const { v4: uuidv4 } = require('uuid');
 
 const passport = require("passport");
 const dbClient = require('../middleware/database_connection');
+const distanceCalculator = require('../middleware/distance_calculation');
+const notification = require('../middleware/notification');
 const router = express.Router();
 
 
@@ -32,9 +34,27 @@ router.post("/new", (req, res, next) => {
 
             dbClient.batch(queries, { prepare: true })
             .then(bresult => {
-            	// Query for all donors in 10km range and send notification
 
-              res.send({ message: "Request Created", data: id });
+            	// Query for all donors in 10km range and send notification
+            	dbClient.execute("SELECT * FROM donor_by_blood_group WHERE blood_group = ? AND state = ?", [blood_group, state], { prepare: true })
+            	.then(donor_result => {
+            		let number_of_donors = 0;
+            		donor_result.rows.forEach((donor, index) => {
+            			
+            			if(distanceCalculator(latitude, longitude, donor.geolocation.latitude, donor.geolocation.longitude) <= 10) {
+            				number_of_donors++;
+            				notification.sendEmail(donor.email);
+            			}
+            		});
+              		res.send({ message: `Request Created and ${number_of_donors} donor(s) informed`, data: id });
+
+            	})
+            	.catch(berror => {
+	              console.error("Internal error in query execution: " + berror);
+	                  return next(berror);
+	            });
+
+
             })
             .catch(berror => {
               console.error("Internal error in query execution: " + berror);
