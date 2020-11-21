@@ -74,6 +74,30 @@ router.post("/new", (req, res, next) => {
 
 });
 
+router.post("/search", (req, res, next) => {
+  const { blood_group, state, latitude, longitude } = req.body;
+
+  dbClient.execute("SELECT * FROM request_by_blood WHERE blood_group = ? AND state = ?", [blood_group, state], { prepare: true })
+  .then(request_result => {
+
+    let closest_request = [];
+
+    request_result.rows.forEach((request, index) => {
+      
+      if(distanceCalculator(latitude, longitude, request.geolocation.latitude, request.geolocation.longitude) <= 10) {
+        closest_request.push(request);
+      }
+    });
+    res.send({ message: `Found ${closest_request.length} request(s)`, data: closest_request });
+
+  })
+  .catch(error => {
+    console.error("Internal error in fetching request by blood: " + error);
+        return next(error);
+  });  
+
+});
+
 
 
 module.exports = router;

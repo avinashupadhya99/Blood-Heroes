@@ -1,50 +1,51 @@
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcryptjs");
 
-const dbClient = require('./middleware/database_connection');
+const dbClient = require("./middleware/database_connection");
 
 module.exports = function initializePassport(passport) {
   passport.use(
     new LocalStrategy((username, password, done) => {
+      dbClient
+        .execute(
+          "SELECT * FROM doctor_credentials WHERE username = ?",
+          [username],
+          { prepare: true }
+        )
+        .then(async (result) => {
+          if (result.rowLength > 0) {
+            const user = result.first();
 
-      dbClient.execute("SELECT * FROM doctor_credentials WHERE username = ?", [username], { prepare: true })
-      .then(async (result) => {
-        if(result.rowLength > 0 ) {
-          const user = result.first();
-          
-          if (!(await bcrypt.compare(password, user.password))) {
-            return done(null, false, { message: "Password Incorrect" });
+            if (!(await bcrypt.compare(password, user.password))) {
+              return done(null, false, { message: "Password Incorrect" });
+            }
+            return done(null, user);
+          } else {
+            return done(null, false, { message: "Username Incorrect" });
           }
-           return done(null, user);
-
-        } else {
-          return done(null, false, { message: "Username Incorrect" });
-        }
-
-      })
-      .catch(error => {
-        console.error("Internal error:" + error);
-        return done(err);
-      });
+        })
+        .catch((error) => {
+          console.error("Internal error:" + error);
+          return done(err);
+        });
     })
   );
   passport.serializeUser((user, done) => done(null, user.id));
   passport.deserializeUser((id, done) => {
-    
-    dbClient.execute("SELECT * FROM doctor WHERE id = ?", [id], { prepare: true })
-    .then(result => {
-      if(result.rowLength > 0 ) {
-        const user = result.first();
-        
-        done(null, user);
-      } else {
-        done("No user", null);
-      }
-    })
-    .catch(error => {
-      done(error, null);
-    });
+    dbClient
+      .execute("SELECT * FROM doctor WHERE id = ?", [id], { prepare: true })
+      .then((result) => {
+        if (result.rowLength > 0) {
+          const user = result.first();
 
+          done(null, user);
+        } else {
+          done("No user", null);
+        }
+      })
+      .catch((error) => {
+        done(error, null);
+      });
   });
 };
 

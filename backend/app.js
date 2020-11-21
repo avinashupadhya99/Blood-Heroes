@@ -5,8 +5,7 @@ const passport = require("passport");
 const session = require("express-session");
 const flash = require("express-flash");
 
-const dbClient = require('./middleware/database_connection');
-
+const dbClient = require("./middleware/database_connection");
 
 require("dotenv").config();
 
@@ -16,37 +15,41 @@ const initializePassport = require("./passport-config");
 initializePassport(
   passport,
   (username) => {
-    dbClient.execute("SELECT * FROM doctor_credentials WHERE username = ?", [username], { prepare: true })
-    .then(result => {
-      if(result.rowLength > 0 ) {
-        const user = result.first();
-        return user.username === username;
-      } else {
+    dbClient
+      .execute(
+        "SELECT * FROM doctor_credentials WHERE username = ?",
+        [username],
+        { prepare: true }
+      )
+      .then((result) => {
+        if (result.rowLength > 0) {
+          const user = result.first();
+          return user.username === username;
+        } else {
+          return false;
+        }
+      })
+      .catch((error) => {
         return false;
-      }
-
-    })
-    .catch(error => {
-      return false;
-    });
+      });
   },
   (id) => {
-    dbClient.execute("SELECT * FROM doctor WHERE id = ?", [id], { prepare: true })
-    .then(result => {
-      if(result.rowLength > 0 ) {
-        const user = result.first();
-        
-        return user.id === id;
-      } else {
+    dbClient
+      .execute("SELECT * FROM doctor WHERE id = ?", [id], { prepare: true })
+      .then((result) => {
+        if (result.rowLength > 0) {
+          const user = result.first();
+
+          return user.id === id;
+        } else {
+          return false;
+        }
+      })
+      .catch((error) => {
         return false;
-      }
-    })
-    .catch(error => {
-      return false;
-    });
+      });
   }
 );
-
 
 //const client = new cassandra.Client({
 //  contactPoints: ['h1', 'h2'],
@@ -72,7 +75,6 @@ app.use(passport.session());
 app.use(flash());
 
 //Routes
-app.use("/", require("./routes/index"));
 app.use("/doctor", require("./routes/doctor"));
 app.use("/donor", require("./routes/donor"));
 app.use("/request", require("./routes/request"));

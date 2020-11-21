@@ -56,7 +56,7 @@ CREATE TABLE donor_by_blood_group (
   email text,
   geolocation geopoint,
   mobile_number bigint,
-  PRIMARY KEY(blood_group, state)
+  PRIMARY KEY(blood_group, state, donorid)
 );
 
 CREATE TABLE request (
@@ -80,7 +80,7 @@ CREATE TABLE request_by_blood (
   doctor_name text,
   remark text,
   created_date timestamp,
-  PRIMARY KEY(blood_group, state)
+  PRIMARY KEY(blood_group, state, requestid)
 );
 
 CREATE TABLE request_by_doctor (
@@ -91,7 +91,7 @@ CREATE TABLE request_by_doctor (
   geolocation geopoint,
   remark text,
   created_date timestamp,
-  PRIMARY KEY(doctorid)
+  PRIMARY KEY(doctorid, requestid)
 );
 
 CREATE TABLE donor_interest (
