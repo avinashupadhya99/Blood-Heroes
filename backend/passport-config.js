@@ -6,7 +6,6 @@ const dbClient = require('./middleware/database_connection');
 module.exports = function initializePassport(passport) {
   passport.use(
     new LocalStrategy((username, password, done) => {
-      console.log(username);
 
       dbClient.execute("SELECT * FROM doctor_credentials WHERE username = ?", [username], { prepare: true })
       .then(async (result) => {

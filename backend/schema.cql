@@ -24,14 +24,29 @@ CREATE TYPE geopoint (
 
 CREATE TABLE donor (
   donorid   uuid,
-  username  text,
+  name  text,
   email text,
-  mobile_number int,
+  mobile_number bigint,
+  date_of_birth date,
+  weight smallint,
   blood_group  text,
   state text,
   geolocation geopoint,
   created_date timestamp,
-  PRIMARY KEY(donorid)
+  PRIMARY KEY(email)
+);
+
+CREATE TABLE donor_by_number (
+  donorid   uuid,
+  name  text,
+  email text,
+  mobile_number bigint,
+  date_of_birth date,
+  weight smallint,
+  blood_group  text,
+  state text,
+  geolocation geopoint,
+  PRIMARY KEY(mobile_number)
 );
 
 CREATE TABLE donor_by_blood_group (
@@ -40,6 +55,6 @@ CREATE TABLE donor_by_blood_group (
   state text,
   email text,
   geolocation geopoint,
-  mobile_number int,
+  mobile_number bigint,
   PRIMARY KEY(blood_group, state)
 );

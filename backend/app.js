@@ -74,7 +74,7 @@ app.use(flash());
 //Routes
 app.use("/", require("./routes/index"));
 app.use("/doctor", require("./routes/doctor"));
-// app.use("/donor", require("./routes/donor"));
+app.use("/donor", require("./routes/donor"));
 
 const PORT = process.env.PORT || 5000;
 

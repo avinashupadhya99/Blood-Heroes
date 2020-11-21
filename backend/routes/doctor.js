@@ -11,10 +11,9 @@ const router = express.Router();
 router.post(
   "/login",
   passport.authenticate("local", {
-    failureFlash: 'Invalid username or password.',
+    failureFlash: true,
   }),
   (req, res) => {
-    console.log("Login successful");
     res.send({ message: "authentication successful", user: req.user });
   }
 );
@@ -53,7 +52,7 @@ router.post("/register", verify, (req, res, next) => {
 
             const queries = [
               {
-                query: 'INSERT INTO doctor (id, username, doctorid, name, hospital, medcouncil, email) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                query: 'INSERT INTO doctor (id, username, doctorid, name, hospital, medcouncil, email, created_date) VALUES (?, ?, ?, ?, ?, ?, ?, toTimeStamp(now()))',
                 params: [ id, username, docId, name, hname, medcouncil, email ]
               }, {
                 query: 'INSERT INTO doctor_credentials (id, username, password) VALUES (?, ?, ?)',
