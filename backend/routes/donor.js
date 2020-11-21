@@ -46,7 +46,7 @@ router.post("/register", (req, res, next) => {
 		              res.send({ message: "Donor Created", data: id });
 		            })
 		            .catch(berror => {
-		              console.error("Internal error in query execution: " + berror);
+		              console.error("Internal error in donor insertion: " + berror);
 		                  return next(berror);
 		            });
 		        }
@@ -63,5 +63,7 @@ router.post("/register", (req, res, next) => {
     });
 
 });
+
+
 
 module.exports = router;

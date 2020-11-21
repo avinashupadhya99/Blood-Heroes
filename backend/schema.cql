@@ -7,7 +7,7 @@ CREATE TABLE doctor (
   medcouncil text,
   email text,
   created_date timestamp,
-  PRIMARY KEY(id)
+  PRIMARY KEY(doctorid, id)
 );
 
 CREATE TABLE doctor_credentials (
@@ -57,4 +57,27 @@ CREATE TABLE donor_by_blood_group (
   geolocation geopoint,
   mobile_number bigint,
   PRIMARY KEY(blood_group, state)
+);
+
+CREATE TABLE request (
+  requestid   uuid,
+  doctorid  uuid,
+  blood_group  text,
+  state text,
+  geolocation geopoint,
+  doctor_name text,
+  remark text,
+  created_date timestamp,
+  PRIMARY KEY(blood_group, state)
+);
+
+CREATE TABLE request_by_doctor (
+  requestid   uuid,
+  doctorid  uuid,
+  blood_group  text,
+  state text,
+  geolocation geopoint,
+  remark text,
+  created_date timestamp,
+  PRIMARY KEY(doctorid)
 );

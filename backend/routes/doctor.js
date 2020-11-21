@@ -25,54 +25,66 @@ router.post("/register", verify, (req, res, next) => {
   } else {
     const { username, password, docId, name, hname, medcouncil, email } = req.body;
 
-    dbClient.execute("SELECT * FROM doctor_credentials WHERE username = ?", [username], { prepare: true })
-    .then(result => {
+    dbClient.execute("SELECT * FROM doctor WHERE doctorid = ?", [docId], { prepare: true })
+    .then(dresult => {
 
-      if(result.rowLength > 0 ) {
-        res.send({ message: "Username already exists" });
+      if(dresult.rowLength > 0 ) {
+        res.send({ message: "Doctor ID already exists" });
       } else {
-        // Create new user here
 
-        // Hashing Pass
-        bcrypt.genSalt(10, (err, salt) =>
-          bcrypt.hash(password, salt, (err, hash) => {
-            if (err) throw err;
+      dbClient.execute("SELECT * FROM doctor_credentials WHERE username = ?", [username], { prepare: true })
+      .then(result => {
 
-            const id = uuidv4();
-            const newUser = {
-              "_id": id,
-              "username": username,
-              "password": password,
-              "docId": docId,
-              "name": name,
-              "hname": hname,
-              "medcouncil": medcouncil,
-              "email": email
-            };
+        if(result.rowLength > 0 ) {
+          res.send({ message: "Username already exists" });
+        } else {
+          // Create new user here
 
-            const queries = [
-              {
-                query: 'INSERT INTO doctor (id, username, doctorid, name, hospital, medcouncil, email, created_date) VALUES (?, ?, ?, ?, ?, ?, ?, toTimeStamp(now()))',
-                params: [ id, username, docId, name, hname, medcouncil, email ]
-              }, {
-                query: 'INSERT INTO doctor_credentials (id, username, password) VALUES (?, ?, ?)',
-                params: [ id, username, hash ]
-              }
-            ];
+          // Hashing Pass
+          bcrypt.genSalt(10, (err, salt) =>
+            bcrypt.hash(password, salt, (err, hash) => {
+              if (err) throw err;
 
-            dbClient.batch(queries, { prepare: true })
-            .then(result => {
-              console.log(result);
-              res.send({ message: "New User Created", data: newUser });
+              const id = uuidv4();
+              const newUser = {
+                "_id": id,
+                "username": username,
+                "password": password,
+                "docId": docId,
+                "name": name,
+                "hname": hname,
+                "medcouncil": medcouncil,
+                "email": email
+              };
+
+              const queries = [
+                {
+                  query: 'INSERT INTO doctor (id, username, doctorid, name, hospital, medcouncil, email, created_date) VALUES (?, ?, ?, ?, ?, ?, ?, toTimeStamp(now()))',
+                  params: [ id, username, docId, name, hname, medcouncil, email ]
+                }, {
+                  query: 'INSERT INTO doctor_credentials (id, username, password) VALUES (?, ?, ?)',
+                  params: [ id, username, hash ]
+                }
+              ];
+
+              dbClient.batch(queries, { prepare: true })
+              .then(result => {
+
+                res.send({ message: "New User Created", data: newUser });
+              })
+              .catch(error => {
+                console.error("Internal error in inserting doctor details:" + error);
+                    return next(error);
+              });
+              
             })
-            .catch(error => {
-              console.error("Internal error:" + error);
-                  return next(error);
-            });
-            
-          })
-        );
-        
+          );
+        }
+    })
+    .catch(derror => {
+      console.error("Internal error in checking doctor ID:" + derror);
+          return next(error);
+    });
 
 
       }
