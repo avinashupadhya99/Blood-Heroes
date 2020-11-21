@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap');
+body{
+    margin:0;
+    padding: 0;
+}
+.signup-image{
+    background-size: cover;
+    max-width: 100vw;
+    height: 100vh;
+    background-image: url('../images/consulting.jpg');
+}
+.bgc{
+    max-width: 100vw;
+    height: 100vh;
+    background: #5C258D;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #4389A2, #5C258D);
+    background: linear-gradient(to right, #4389A2, #5C258D);
+    opacity: 0.8;
+}
+.form1{
+    position: absolute;
+    width: 600px;
+    height: 680px;
+    background-color: white;
+    top: 40px;
+    opacity: 0.9;
+    left: 30%;
+    box-shadow: 0 0 5px gray;
+    border-radius: 10px;
+}
+.form-heading{
+    position: relative;
+    text-align: center;
+    padding-top: 40px;
+    font-size: 36px;
+    font-family: 'Ubuntu', sans-serif;
+}
+.main-form{
+    display: grid;
+    margin-top: 50px;
+}
+.input{
+    width: 80%;
+    height: 40px;
+    margin: auto;
+    margin-bottom: 30px;
+    font-size: 16px;
+}
+.input::placeholder{
+    font-family: 'Ubuntu', sans-serif;
+}
+.input:focus{
+    outline: none;
+}
+.form-btn{
+    width: 80%;
+    margin: auto;
+    margin-top: 20px;
+    height: 40px;
+    font-family: 'Ubuntu', sans-serif;
+    background-color: #21D4FD;
+    background-image: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);
+    font-size: 20px;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+.form-btn:focus{
+    outline: none;
+}
+.login-line{
+    font-size: 16px;
+    text-align: center;
+    margin-top: 60px;
+    font-family: 'Ubuntu', sans-serif;
+    color: rgb(51, 51, 51);
+}
+.login-link{
+    color: rgb(65, 65, 247);
+    text-decoration: none;
+    font-family: 'Ubuntu', sans-serif;
+}
+.drag-down{
+    width: 81%;
+    margin: auto;
+    height: 45px;
+    font-size: 16px;
+    color: gray;
+    font-family: 'Ubuntu', sans-serif;
+}
+.error{
+    font-family: 'Ubuntu', sans-serif;
+    color: red;
+    text-align: center;
+    font-size: 16px;
+    margin-bottom: 20px;
+}

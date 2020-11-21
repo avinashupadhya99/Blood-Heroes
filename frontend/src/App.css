@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400&family=Noto+Sans:wght@400&display=swap');
+body {
+  margin: 0;
+  padding: 0;
+}
+nav {
+  height: 12vh;
+  background: #4776e6; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #8e54e9,
+    #4776e6
+  ); 
+    background: linear-gradient(
+    to right,
+    #8e54e9,
+    #4776e6
+  ); 
+}
+.proviser {
+  margin: 0;
+  font-family: 'Raleway', sans-serif;
+  color: white;
+  font-size: 60px;
+  padding-left: 50px;
+  padding-top: 8px;
+  display: inline-block;
+  text-decoration: none;
+}
+.list {
+  float: right;
+  padding-right:50px;
+  display: flex;
+  list-style: none;
+}
+.list-item{
+  list-style: none;
+  color: white;
+  text-decoration:none;
+  font-size: 24px;
+  padding-top: 15px;
+  font-family: 'Raleway', sans-serif;
+  display: inline-block;
+}
+.main{
+  display: flex;
+}
+.text{
+  width: 60%;
+}
+.image{
+  margin-top: 100px;
+}
+.heading{
+  margin-top: 20%;
+  margin-left: 50px;
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 44px;
+}
+.btn{
+  text-decoration:none ;
+  padding: 10px 8px;
+  margin-left: 50px;
+  font-family: 'Noto Sans', sans-serif;
+  background: #4776e6; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #8e54e9,
+    #4776e6
+  ); 
+    background: linear-gradient(
+    to right,
+    #8e54e9,
+    #4776e6
+  );
+  border-radius: 5px; 
+  color: white;
+  border: none;
+  width: 65px;
+  height: 30px;
+  font-size: 20px;
+  cursor: pointer;
+  position: relative;
+  top: 20px;
+}
+.btn:focus{
+  outline: none;
+}
+.img{
+  width: 700px;
+  height: 600px;
+  margin-top: -100px;
+}
+.heading2{
+  font-family: 'Noto Sans', sans-serif;
+  margin-top: 50px;
+  margin-left: 50px;
+}
